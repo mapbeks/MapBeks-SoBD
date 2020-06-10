@@ -27,6 +27,7 @@ h1 {
   margin-bottom: 8px;
   margin-left: 10px;
   color: #13579c;
+  text-align: center;
   font-size: 35px;
   font-weight: darken;
 }
@@ -39,6 +40,7 @@ h2 {
   margin-right: 10px;  
   font-size: 12px;
   color: #5a5a5a;
+  text-align: center;
   font-weight: lighter;
 }
 
@@ -64,6 +66,7 @@ label {
 
 #controls {
   width: 100%;
+  text-align: center;
   margin-left: 10px;
   margin-bottom: 10px;
   font-family: 'Roboto', sans-serif;
