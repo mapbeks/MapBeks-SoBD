@@ -5,7 +5,7 @@
 <head>
 	<meta charset="utf-8" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
 	<meta content="IE=edge" http-equiv="X-UA-Compatible">
-	<title>Saan may nagdedeliver?</title>
+	<title>SoBD</title>
 	<link href="https://unpkg.com/leaflet@0.7.7/dist/leaflet.css" rel="stylesheet">
 	<link href="//cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" rel="stylesheet">
 	<link href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet">
@@ -26,36 +26,26 @@
 	<body oncontextmenu="return false">
 	<div id="wrapper">
 		<div id="header">
-			<h1>Pst. Saan may nagdedeliver?</h1>
-		        <h2>Pins = nagdedeliver ng kung anek-anek. Padagdag ng information kung may alam ka pang iba, para malaman din ng iba kung anong malapit sakanilang nagdedeliver ng pang-araw-araw na pangangailangan ngayong kailangan mag-#StayAtHome. Hanapin lang ang location ng store na alam mong nag-aaccept ng deliveries (mag-Zoom in sa mapa, o gamitin ang search tool sa kaliwa), o kung nasa mismong tindahan ka, click mo lang yung kamay na naka-turo pababa na nasa bandang kaliwa ng mapa. Pag ready ka na magdagdag ng impormasyon, i-click lang ang "Dito may nagdedeliver." Shelemet! </h2>	 	
+			<h1>Stories of Bullying and Discrimination</h1>
+		        <h2>Let your personal narratives on discrimination and bullying be known. Let people understand these stories as an important first step in stopping more from happening. </h2>	 	
 		</div>
 		<div id="controls">
-			<input onclick="startEdits()" type="button" value="Dito may nagdedeliver."> <input onclick="stopEdits()" type="button" value="Yehey!"><br>
+			<input onclick="startEdits()" type="button" value="Share your SoBD."> <input onclick="stopEdits()" type="button" value="Read SoBDs."><br>
 			
 		</div>
 		<div id="map"></div>
 		<div id="credits">
-			<p>COVID-19 Dashboard: where to prioritize mass testing? <a href="https://public.tableau.com/views/COVID-19PHDashboard-Analysis/Dashboard?:display_count=no&:showVizHome=no">link</a></p>
+			<p>Visit <a href="https://mapbeks.com">the MapBeks website</a>and <a href="https://mentalhealthawhereness.com">Mental Health aWHEREness</a></p>
 		</div>
 	</div>
-	<div id="dialog" title="Dito may nagdedeliver:">
+	<div id="dialog" title="Share SoBD:">
 		<form>
 			<fieldset style="border: none;">
 				<ul style="list-style-type: none; padding-left: 0px">
-					<li><label for="fname">Name ng Store o Sinong Hahanapin?</label></li>
-					<li><input id="fname" name="fname" placeholder="name of store or sinong hahanapin?" size="40" type="text" required></li>
-					<li><label for="product">Product</label></li>
-					<li><input id="product" name="product" placeholder="Anong dinedeliver?" size="40" type="text" required></li>					
-					<li><label for="price">Magkano?</label></li>
-					<li><input id="price" name="price" placeholder="Magkano po ito?" size="40" type="text" required></li>
-					<li><label for="contact">Contact Number</label></li>
-					<li><input id="contact" name="contact" placeholder="Contact Number" size="40" type="text" required></li>										
-					<li><label for="address">Complete Address</label></li>
-					<li><textarea cols="40" id="address" name="address" placeholder="Gusto po natin makatulong, sa sana po legit pls." rows="2"></textarea></li>			
-					<li><label for="sched">Day and Time ng Delivery</label></li>
-					<li><textarea cols="40" id="sched" name="sched" placeholder="Tuwing kailan at anong oras po pwede magpadeliver?" rows="5"></textarea></li>					
-					<li><label for="more">More information or Note to customers</label></li>
-					<li><textarea cols="40" id="more" name="more" placeholder="Important information bago umorder o pagkatapos" rows="5"></textarea></li>
+					<li><label for="fname">Nickname</label></li>
+					<li><input id="fname" name="fname" placeholder="Nickname" size="40" type="text" required></li>
+					<li><label for="story">SoDB</label></li>
+					<li><textarea cols="40" id="story" name="story" placeholder="Tell us about how you were discriminated/bullied." rows="2"></textarea></li>							
 				</ul><input style="position:absolute; top:-1000px" tabindex="-1" type="submit">
 			</fieldset>
 		</form>
@@ -79,7 +69,7 @@
 	          var config = { //TODO: Change to your username, insert function on Carto, and Carto tablename
 	              cartoUsername: "anditabinas",
 	              cartoInsertFunction : "insert_crowd_mapping_data",
-	              cartoTablename: "saanmaynagdedeliver",
+	              cartoTablename: "mapbeks",
 	              mapcenter: [13.325,121.300],
 	              drawOptions: {
 	                  draw: {
@@ -96,13 +86,13 @@
 	          };         
 	          
 	          var cartoData = null; //These adds data from Carto using the SQL API, declares variables, and writes the SQL selection query
-	          var sqlQuery = "SELECT the_geom, name, product, price, contact, address, sched, more FROM " + config.cartoTablename;
+	          var sqlQuery = "SELECT the_geom, name, story, date FROM " + config.cartoTablename;
 	          var map = L.map('map', { center: config.mapcenter, zoom: 6});   // Creates the Leaflet map object
 	          map.addControl(new L.Control.Fullscreen());
 		
 				  
-	          var Mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/anditabinas/ck03r85tj4p951cl5s673xu47/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYW5kaXRhYmluYXMiLCJhIjoiY2plejI3aHp3MDV3MjMzcW9ydXl2bHNmZiJ9.9h6j7BbkM-PUtK0zaZ1iUg', {
-	              attribution: '&copy; <a href="mapbox://styles/anditabinas/ck03r85tj4p951cl5s673xu47">Mapbox<\/a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap<\/a> contributors',
+	          var Mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/anditabinas/ckb8smaod0c0p1ipqm8jfeqsl/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiYW5kaXRhYmluYXMiLCJhIjoiY2plejI3aHp3MDV3MjMzcW9ydXl2bHNmZiJ9.9h6j7BbkM-PUtK0zaZ1iUg', {
+	              attribution: '&copy; <a href="mapbox://styles/anditabinas/ckb8smaod0c0p1ipqm8jfeqsl">Mapbox<\/a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap<\/a> contributors',
 	              subdomains: 'abcd',
 	              maxZoom: 20 //Adds the tilelayer basemap; I used my mapbox style here.
 	          }); 
@@ -122,7 +112,7 @@
 	              $.getJSON(getData, function (data) {
 	                  cartoData = L.geoJson(data, {
 	                      onEachFeature: function (feature, layer) {
-	                          layer.bindPopup('<b>Name: <\/b>' + feature.properties.name + '<br>' + '<b>Product: <\/b>' + feature.properties.product + '<br>' + '<b>Price: <\/b>' + feature.properties.price + '<br>' + '<b>Contact Number: <\/b>' + feature.properties.contact + '<br>' + '<b>Complete Address: <\/b>' + feature.properties.address + '<br>' + '<b>Day and Time We Accept Orders for Delivery: <\/b>' + feature.properties.sched + '<br>' + '<b>More information: <\/b>' + feature.properties.more + '');
+	                          layer.bindPopup('<b>Name: <\/b>' + feature.properties.name + '<br>' + '<b>Story: <\/b>' + feature.properties.story + '');
 	                      }           
 	                  }).addTo(map);
 	              });
@@ -181,12 +171,7 @@
 	          });
 	          function setData() {
 	              var enteredFname = "'" + JSON.stringify(fname.value.replace("'", "''")) + "'"
-	              var enteredProduct = "'" + JSON.stringify(product.value.replace("'", "''")) + "'"	
-	              var enteredPrice = "'" + JSON.stringify(price.value.replace("'", "''")) + "'"			      
-	              var enteredContact = "'" + JSON.stringify(contact.value.replace("'", "''")) + "'"	
-	              var enteredAddress = "'" + JSON.stringify(address.value.replace("'", "''")) + "'"	
-	              var enteredSched = "'" + JSON.stringify(sched.value.replace("'", "''")) + "'"			  
-	              var enteredMore = "'" + JSON.stringify(more.value.replace("'", "''")) + "'";
+	              var enteredStory = "'" + JSON.stringify(story.value.replace("'", "''")) + "'";
 				  
 			  
 	              drawnItems.eachLayer(function (layer) {
@@ -194,12 +179,7 @@
 	                      sql = "SELECT " + config.cartoInsertFunction + "("; //Constructs the SQL Query from the entered parameters on the dialog/form
 	                  sql += drawing;
 	                  sql += "," + enteredFname;
-	                  sql += "," + enteredProduct;
-	                  sql += "," + enteredPrice;
-	                  sql += "," + enteredContact;			      
-	                  sql += "," + enteredAddress;
-	                  sql += "," + enteredSched;
-	                  sql += "," + enteredMore;            
+	                  sql += "," + enteredStory;            
 	                  sql += ");";
 	                  console.log(drawing);
 	                  
@@ -218,12 +198,7 @@
 	                  });
 	                  var newData = layer.toGeoJSON();
 	                    newData.properties.name = fname.value;
-	                    newData.properties.product = product.value;
-	                    newData.properties.price = price.value;
-	                    newData.properties.contact = contact.value;			      
-	                    newData.properties.address = address.value;
-	                    newData.properties.sched = sched.value;
-	                    newData.properties.more = more.value;             
+	                    newData.properties.story = story.value;             
 	                  cartoData.addData(newData);
 	              });
 	              
